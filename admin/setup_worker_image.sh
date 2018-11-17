@@ -64,10 +64,10 @@ RUBY_PACKAGES="bundler"
 sudo apt-get -y --allow-unauthenticated install ${PACKAGES} ${WORKER_PACKAGES}
 
 #sudo pip3 install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
-sudo pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl
+sudo pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
 sudo pip3 install ${PYTHON_PACKAGES}
 #sudo python3.6 -m pip install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl
-sudo python3.6 -m pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl
+sudo python3.6 -m pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
 sudo python3.6 -m pip install ${PYTHON_PACKAGES}
 
 sudo gem install ${RUBY_PACKAGES}
