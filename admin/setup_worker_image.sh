@@ -10,18 +10,23 @@ sudo useradd -m worker -U -G bots -s /bin/bash
 
 ## Add necessary repositories for Node.js.
 # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 
 ## Add Mono repository.
 # http://www.mono-project.com/download/#download-lin
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-echo "deb http://download.mono-project.com/repo/ubuntu xenial main" | sudo tee /etc/apt/sources.list.d/mono-official.list
+echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+#sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+#echo "deb http://download.mono-project.com/repo/ubuntu xenial main" | sudo tee /etc/apt/sources.list.d/mono-official.list
 
 ## Add dotnet repo.
 # https://www.microsoft.com/net/learn/get-started/linuxubuntu
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
+#curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+#sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+#sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-zesty-prod zesty main" > /etc/apt/sources.list.d/dotnetdev.list'
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B979B07E28DB02C46DF417A0893
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-bionic-prod bionic main" > /etc/apt/sources.list.d/dotnetdev.list'
 
 ## Add Dart repository.
 # https://www.dartlang.org/install/linux
@@ -43,7 +48,7 @@ sudo apt-get update
 sudo apt-get -y upgrade
 
 ## List the packages to install for running bots.
-PACKAGES="build-essential gcc g++ python3 python3.6 python3-pip git ocaml openjdk-8-jdk php ruby scala nodejs mono-complete dotnet-sdk-2.0.3 libgeos-dev tcl8.5 mit-scheme racket octave luajit lua5.2 ghc esl-erlang coffeescript dart fp-compiler sbcl dmd-bin mono-vbnc gnat-6 cmake python3.6-dev python-numpy cython clang libicu-dev elixir sbt libboost-python-dev libboost-all-dev"
+PACKAGES="build-essential gcc g++ python3 python3.6 python3-pip git ocaml openjdk-8-jdk php ruby scala nodejs mono-complete dotnet-sdk-2.1.105 libgeos-dev tcl8.5 mit-scheme racket octave luajit lua5.2 ghc esl-erlang coffeescript dart fp-compiler sbcl dmd-bin mono-vbnc gnat-6 cmake python3.6-dev python-numpy cython clang libicu-dev elixir sbt libboost-python-dev libboost-all-dev"
 
 ## List the packages to install for the worker itself.
 WORKER_PACKAGES="virtualenv cgroup-tools unzip iptables-persistent"
@@ -56,12 +61,17 @@ RUBY_PACKAGES="bundler"
 ## Install everything
 sudo apt-get -y --allow-unauthenticated install ${PACKAGES} ${WORKER_PACKAGES}
 
-sudo pip3 install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
+#sudo pip3 install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp35-cp35m-manylinux1_x86_64.whl
+sudo pip3 install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl
 sudo pip3 install ${PYTHON_PACKAGES}
-sudo python3.6 -m pip install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl
+#sudo python3.6 -m pip install http://download.pytorch.org/whl/cu75/torch-0.2.0.post3-cp36-cp36m-manylinux1_x86_64.whl
+sudo python3.6 -m pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-win_amd64.whl
 sudo python3.6 -m pip install ${PYTHON_PACKAGES}
 
 sudo gem install ${RUBY_PACKAGES}
+
+## Create a user to be used by compilation. This user will have limited Internet access.
+sudo useradd -m bot_compilation -G bots
 
 ## Install Rustup, making sure the compilation user can access it.
 ## None of the other users will have access!
@@ -84,25 +94,25 @@ rm go1.9.2.linux-amd64.tar.gz
 sudo -iu bot_compilation sh -c 'curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -sSf > miniconda.sh; bash miniconda.sh -b -p $HOME/miniconda'
 
 # Groovy
-curl -s get.sdkman.io | sudo -iu bot_compilation bash
-cat <<EOF | sudo -iu bot_compilation tee -a /home/bot_compilation/.profile
+#curl -s get.sdkman.io | sudo -iu bot_compilation bash
+#cat <<EOF | sudo -iu bot_compilation tee -a /home/bot_compilation/.profile
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/worker/.sdkman"
-[[ -s "/home/worker/.sdkman/bin/sdkman-init.sh" ]] && source "/home/bot_compilation/.sdkman/bin/sdkman-init.sh"
-EOF
-sudo -iu bot_compilation sdk install groovy
+#export SDKMAN_DIR="/home/worker/.sdkman"
+#[[ -s "/home/worker/.sdkman/bin/sdkman-init.sh" ]] && source "/home/bot_compilation/.sdkman/bin/sdkman-init.sh"
+#EOF
+#sudo -iu bot_compilation sdk install groovy
 
 # Julia
-wget -O julia.tgz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.1-linux-x86_64.tar.gz
-sudo tar -C /usr/local -xzf julia.tgz
-rm julia.tgz
-sudo ln -s /usr/local/julia-0d7248e2ff/bin/julia /usr/local/bin/julia
+#wget -O julia.tgz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.1-linux-x86_64.tar.gz
+#sudo tar -C /usr/local -xzf julia.tgz
+#rm julia.tgz
+#sudo ln -s /usr/local/julia-0d7248e2ff/bin/julia /usr/local/bin/julia
 
 # Swift
-wget -O swift.tar.gz https://swift.org/builds/swift-4.0.2-release/ubuntu1610/swift-4.0.2-RELEASE/swift-4.0.2-RELEASE-ubuntu16.10.tar.gz
-sudo tar -C /usr/local -xzf swift.tar.gz
-echo 'export PATH="$PATH:/usr/local/swift-4.0.2-RELEASE-ubuntu16.10/usr/bin"' | sudo -iu bot_compilation tee -a /home/bot_compilation/.profile
-sudo chmod -R o+r /usr/local/swift-4.0.2-RELEASE-ubuntu16.10/usr/lib/swift/CoreFoundation/
+#wget -O swift.tar.gz https://swift.org/builds/swift-4.0.2-release/ubuntu1610/swift-4.0.2-RELEASE/swift-4.0.2-RELEASE-ubuntu16.10.tar.gz
+#sudo tar -C /usr/local -xzf swift.tar.gz
+#echo 'export PATH="$PATH:/usr/local/swift-4.0.2-RELEASE-ubuntu16.10/usr/bin"' | sudo -iu bot_compilation tee -a /home/bot_compilation/.profile
+#sudo chmod -R o+r /usr/local/swift-4.0.2-RELEASE-ubuntu16.10/usr/lib/swift/CoreFoundation/
 
 ## Create four cgroups to isolate bots.
 sudo touch /etc/cgconfig.conf
@@ -162,8 +172,6 @@ echo "c 195:2 rwm" > /sys/fs/cgroup/devices/bot_3/devices.deny
 EOF
 sudo chmod 544 /home/worker/fix_cgroups.sh
 
-## Create a user to be used by compilation. This user will have limited Internet access.
-sudo useradd -m bot_compilation -G bots
 ## No access to 10. addresses (which are our own servers)
 ## We are giving them general network access (to download dependencies)
 sudo iptables -A OUTPUT -d 10.0.0.0/8 -m owner --uid-owner bot_compilation -j DROP
@@ -241,13 +249,13 @@ cargo -V
 rustup -V
 EOF
 
-echo "Clojure Packages"
-sudo -iu bot_compilation bash << EOF
-lein version
-EOF
+#echo "Clojure Packages"
+#sudo -iu bot_compilation bash << EOF
+#lein version
+#EOF
 
-echo "Groovy Packages"
-sudo -iu bot_compilation sdk current | grep groovy
+#echo "Groovy Packages"
+#sudo -iu bot_compilation sdk current | grep groovy
 
 echo "Miniconda"
 sudo -iu bot_compilation bash -c 'source ~/miniconda/bin/activate; conda -V'
