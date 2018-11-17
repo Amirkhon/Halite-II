@@ -35,36 +35,36 @@ MAX_BOT_UPLOAD_SIZE = 20 * 1024 * 1024
 # Needs to match corresponding value in worker configuration
 MAX_COMPILED_BOT_UPLOAD_SIZE = 100 * 1024 * 1024
 # Secret key for Flask session cookies
-FLASK_SECRET_KEY = ""
+FLASK_SECRET_KEY = "secretKey"
 # Where to look for API keys
 API_KEY_HEADER = "X-Api-Key"
 # What session cookie to use
 SESSION_COOKIE = "user_id"
 
 # Google Cloud
-GCLOUD_PROJECT = 'TODO'
-GCLOUD_PROJECT_ID = 'TODO'
-GCLOUD_ZONE = 'us-central1-c'
+GCLOUD_PROJECT = 'Clever'
+GCLOUD_PROJECT_ID = 'steel-shine-201523'
+GCLOUD_ZONE = 'us-east1-b'
 
-GCLOUD_COMPILATION_BUCKET = 'TODO'
-GCLOUD_BOT_BUCKET = 'TODO'
+GCLOUD_COMPILATION_BUCKET = 's24-compiled-bots'
+GCLOUD_BOT_BUCKET = 's24-uploaded-bots'
 # Replays are saved in different buckets based on player level
 GCLOUD_REPLAY_BUCKETS = {
     # 0 is the normal bucket
-    0: 'todo',
+    0: 's24-replays',
     # 1 is the bucket for gold and above players
-    1: 'todo',
+    1: 's24-gold-replays',
 }
-GCLOUD_ERROR_LOG_BUCKET = 'TODO'
-GCLOUD_DEPLOYED_ARTIFACTS_BUCKET = 'TODO'
+GCLOUD_ERROR_LOG_BUCKET = 's24-error-logs'
+GCLOUD_DEPLOYED_ARTIFACTS_BUCKET = 's24-deployed-artifacts'
 
 # The name of the worker source blob in the object storage bucket.
-WORKER_ARTIFACT_KEY = ""
+WORKER_ARTIFACT_KEY = "Halite-II"
 
-DATABASE_PROJECT_ID = ""
-DATABASE_REGION = ""
-DATABASE_INSTANCE_NAME = ""
-DATABASE_URL = ""
+DATABASE_PROJECT_ID = "Clever"
+DATABASE_REGION = "us-east1-b"
+DATABASE_INSTANCE_NAME = "steel-shine-201523:us-east1:s24"
+DATABASE_URL = "mysql://s24:root@35.231.74.162/halite2"
 
 # OAuth
 OAUTH_GITHUB_CONSUMER_KEY = ""

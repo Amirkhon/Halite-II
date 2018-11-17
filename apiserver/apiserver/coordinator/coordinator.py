@@ -536,7 +536,7 @@ def update_user_timeout(conn, game_id, user):
                                  user["player_level"],
                                  user["creation_time"])
     if timed_out_count == 1 and not timeout_sent:
-        notify.send_templated_notification(
+        '''notify.send_templated_notification(
             recipient,
             config.FIRST_TIMEOUT_TEMPLATE,
             {
@@ -552,7 +552,7 @@ def update_user_timeout(conn, game_id, user):
                     config.API_URL, user["user_id"], game_id),
             },
             config.GAME_ERROR_MESSAGES,
-            config.C_BOT_TIMED_OUT)
+            config.C_BOT_TIMED_OUT)'''
 
         conn.execute(model.bots.update().values(timeout_sent=True).where(
             (model.bots.c.user_id == user["user_id"]) &
@@ -569,7 +569,7 @@ def update_user_timeout(conn, game_id, user):
         ).where((model.bots.c.user_id == user["user_id"]) &
                 (model.bots.c.id == user["bot_id"])))
 
-        notify.send_templated_notification(
+        '''notify.send_templated_notification(
             recipient,
             config.BOT_DISABLED_TEMPLATE,
             {
@@ -585,4 +585,4 @@ def update_user_timeout(conn, game_id, user):
                     config.API_URL, user["user_id"], game_id),
             },
             config.GAME_ERROR_MESSAGES,
-            config.C_BOT_DISABLED)
+            config.C_BOT_DISABLED)'''
