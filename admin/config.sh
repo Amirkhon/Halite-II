@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GCLOUD_PROJECT="halite-2"
+GCLOUD_PROJECT="steel-shine-201523"
 GCLOUD_ZONE="us-east1-b"
 GCLOUD_GPU_ZONE="us-east1-c"
 
@@ -12,5 +12,5 @@ GPU_IMAGE="halite-gpu-worker"
 WEBSITE_IMAGE="website-image-xiii"
 
 SERVICE_ACCOUNT="apiserver"
-COORDINATOR_URL="http://10.142.0.5:5001/v1/coordinator/"
+COORDINATOR_URL="http://10.142.0.4:5001/v1/coordinator/"
 SECRET_FOLDER=""

@@ -72,7 +72,7 @@ OAUTH_GITHUB_CONSUMER_SECRET = ""
 
 # CORS setup
 SITE_URL = ""
-API_URL = ""
+API_URL = "http://35.244.180.181"
 CORS_ORIGINS = [SITE_URL]
 
 # API Key authentication
