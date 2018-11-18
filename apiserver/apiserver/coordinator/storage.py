@@ -95,10 +95,10 @@ def download_bot():
     except gcloud_exceptions.NotFound:
         raise util.APIError(404, message="Bot not found.")'''
     botname = "{}_{}".format(user_id, bot_id)
-    if os.path.isfile(fname):
-        flask.send_from_directory(backet, "{}_{}".format(user_id, bot_id))
+    if os.path.isfile(os.path.join(backet, botname)):
+        flask.send_from_directory(backet, botname)
     else:
-        raise util.APIError(404, message="Bot not found.")'''
+        raise util.APIError(404, message="Bot not found.")
 
 
 @coordinator_api.route("/botHash")

@@ -16,7 +16,7 @@ login_log = logging.getLogger("login")
 oauth_login = flask.Blueprint("github_login", __name__)
 oauth_logout = flask.Blueprint("oauth_logout", __name__)
 
-oauth = OAuth(app)
+'''oauth = OAuth(app)
 github = oauth.remote_app(
     "github",
     consumer_key=config.OAUTH_GITHUB_CONSUMER_KEY,
@@ -28,7 +28,7 @@ github = oauth.remote_app(
     access_token_url="https://github.com/login/oauth/access_token",
     authorize_url="https://github.com/login/oauth/authorize",
 )
-
+'''
 
 @oauth_login.route("/github")
 def github_login_init():
@@ -37,7 +37,7 @@ def github_login_init():
     full_url = urllib.parse.urljoin(
         base_url,
         flask.url_for(".github_login_callback"))
-    return github.authorize(callback=full_url)
+    #return github.authorize(callback=full_url)
 
 
 @oauth_login.route("/me")
@@ -60,11 +60,11 @@ def logout():
 
 @oauth_login.route("/response/github")
 def github_login_callback():
-    try:
+    '''try:
         response = github.authorized_response()
     except OAuthException:
         login_log.error(traceback.format_exc())
-        raise
+        raise'''
 
     if response is None or not response.get("access_token"):
         if response and "error" in response:
@@ -85,11 +85,11 @@ def github_login_callback():
 
     flask.session["github_token"] = (response["access_token"], "")
 
-    user_data = github.get("user").data
+    #user_data = github.get("user").data
 
     username = user_data["login"]
     github_user_id = user_data["id"]
-    emails = github.get("user/emails").data
+    #emails = github.get("user/emails").data
 
     email = emails[0]["email"]
     for record in emails:
@@ -123,6 +123,6 @@ def github_login_callback():
 
     return util.response_success()
 
-@github.tokengetter
-def github_tokengetter():
-    return flask.session.get("github_token")
+#@github.tokengetter
+#def github_tokengetter():
+#    return flask.session.get("github_token")

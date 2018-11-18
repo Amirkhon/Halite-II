@@ -138,7 +138,7 @@ def update_compilation_status():
                             bot_id=bot_id,
                             version_number=bot["version_number"],
                             # User is unranked if this is their first bot
-                        last_rank=bot_rank[0] if bot_rank else None,
+                            last_rank=bot_rank[0] if bot_rank else None,
                             last_score=bot["score"],
                             last_num_players=num_active_users,
                             last_games_played=bot["games_played"],
@@ -171,7 +171,7 @@ def update_compilation_status():
                 (model.bots.c.id == bot_id)
             )).first()
 
-        '''notify.send_templated_notification(
+            '''notify.send_templated_notification(
                 notify.Recipient(user["id"], user["username"], user["email"],
                                  user["organization_name"], user["player_level"],
                                  user["creation_time"]),
