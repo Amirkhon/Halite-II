@@ -263,4 +263,4 @@ echo "Miniconda"
 sudo -iu bot_compilation bash -c 'source ~/miniconda/bin/activate; conda -V'
 
 # Don't just grant random people sudo access.
-sudo rm /etc/sudoers.d/google_sudoers
+#sudo rm /etc/sudoers.d/google_sudoers

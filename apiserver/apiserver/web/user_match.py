@@ -5,7 +5,7 @@ import io
 
 import flask
 import sqlalchemy
-import google.cloud.storage as gcloud_storage
+#import google.cloud.storage as gcloud_storage
 
 from .. import model, util
 
@@ -60,18 +60,19 @@ def get_match_replay(intended_user, match_id):
             raise util.APIError(404, message="Match not found.")
 
         bucket = model.get_replay_bucket(match["replay_bucket"])
-        blob = gcloud_storage.Blob(match["replay_name"], bucket,
+        '''blob = gcloud_storage.Blob(match["replay_name"], bucket,
                                    chunk_size=262144)
         buffer = io.BytesIO()
         blob.download_to_file(buffer)
-        buffer.seek(0)
-        response = flask.make_response(flask.send_file(
-            buffer,
+        buffer.seek(0)'''
+        replay_name = match["replay_name"]
+        response = flask.make_response(flask.send_from_directory(
+            bucket, replay_name,
             mimetype="application/x-halite-2-replay",
             as_attachment=True,
             attachment_filename=str(match_id)+".hlt"))
 
-        response.headers["Content-Length"] = str(buffer.getbuffer().nbytes)
+        response.headers["Content-Length"] = str(os.stat(os.path.join(bucket, replay_name)).st_size)
 
         return response
 
@@ -110,12 +111,12 @@ def get_match_error_log(intended_user, match_id, *, user_id):
                 404, message="No error log for this player in this game."
             )
 
-        blob = gcloud_storage.Blob(match["log_name"],
+        '''blob = gcloud_storage.Blob(match["log_name"],
                                    model.get_error_log_bucket(),
                                    chunk_size=262144)
         buffer = io.BytesIO()
         blob.download_to_file(buffer)
-        buffer.seek(0)
-        return flask.send_file(
-            buffer, mimetype="text/plain", as_attachment=True,
+        buffer.seek(0)'''
+        return flask.send_from_directory(
+            model.get_error_log_bucket(), match["log_name"], mimetype="text/plain", as_attachment=True,
             attachment_filename="match_{}_user_{}_errors.log".format(match_id, user_id))

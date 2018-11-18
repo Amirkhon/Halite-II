@@ -2,10 +2,11 @@ import base64
 import binascii
 import io
 import tempfile
+import os
 
 import flask
-import google.cloud.storage as gcloud_storage
-import google.cloud.exceptions as gcloud_exceptions
+#import google.cloud.storage as gcloud_storage
+#import google.cloud.exceptions as gcloud_exceptions
 
 from werkzeug.contrib.cache import FileSystemCache
 
@@ -24,7 +25,7 @@ def download_source_blob():
     """Retrieve the worker blob from object storage."""
 
     cached_blob = cache.get(config.WORKER_ARTIFACT_KEY)
-    if cached_blob is None:
+    '''if cached_blob is None:
         print("Getting from GCloud", config.WORKER_ARTIFACT_KEY)
         # Retrieve from GCloud
         try:
@@ -35,7 +36,7 @@ def download_source_blob():
             cached_blob = gcloud_blob.download_as_string()
             cache.set(config.WORKER_ARTIFACT_KEY, cached_blob)
         except gcloud_exceptions.NotFound:
-            raise util.APIError(404, message="Worker blob not found.")
+            raise util.APIError(404, message="Worker blob not found.")'''
 
     if cached_blob is None:
         raise util.APIError(404, message="Worker blob not found.")
@@ -60,10 +61,11 @@ def upload_bot():
 
     uploaded_file = flask.request.files["bot.zip"]
     # Save to GCloud
-    blob = gcloud_storage.Blob("{}_{}".format(user_id, bot_id),
+    uploaded_file.save(os.path.join(model.get_bot_bucket(), "{}_{}".format(user_id, bot_id)))
+    '''blob = gcloud_storage.Blob("{}_{}".format(user_id, bot_id),
                                model.get_bot_bucket(),
                                chunk_size=262144)
-    blob.upload_from_file(uploaded_file)
+    blob.upload_from_file(uploaded_file)'''
     return util.response_success()
 
 
@@ -80,7 +82,7 @@ def download_bot():
         bucket = model.get_bot_bucket()
 
     # Retrieve from GCloud
-    try:
+    '''try:
         botname = "{}_{}".format(user_id, bot_id)
         blob = gcloud_storage.Blob(botname,
                                    bucket, chunk_size=262144)
@@ -91,7 +93,12 @@ def download_bot():
                                as_attachment=True,
                                attachment_filename=botname + ".zip")
     except gcloud_exceptions.NotFound:
-        raise util.APIError(404, message="Bot not found.")
+        raise util.APIError(404, message="Bot not found.")'''
+    botname = "{}_{}".format(user_id, bot_id)
+    if os.path.isfile(fname):
+        flask.send_from_directory(backet, "{}_{}".format(user_id, bot_id))
+    else:
+        raise util.APIError(404, message="Bot not found.")'''
 
 
 @coordinator_api.route("/botHash")

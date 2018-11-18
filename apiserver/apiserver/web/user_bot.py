@@ -1,13 +1,14 @@
 """
 User bot API endpoints - create/update/delete/list user's bots
 """
+import os
 import zipfile
 
 import flask
 import sqlalchemy
 
-import google.cloud.storage as gcloud_storage
-import google.cloud.exceptions as gcloud_exceptions
+#import google.cloud.storage as gcloud_storage
+#import google.cloud.exceptions as gcloud_exceptions
 
 from .. import model, util
 
@@ -167,10 +168,11 @@ def store_user_bot(user_id, intended_user, bot_id):
             raise util.APIError(400, message="Cannot upload new bot until "
                                              "previous one is compiled.")
 
-        blob = gcloud_storage.Blob("{}_{}".format(user_id, bot_id),
+        '''blob = gcloud_storage.Blob("{}_{}".format(user_id, bot_id),
                                    model.get_compilation_bucket(),
                                    chunk_size=262144)
-        blob.upload_from_file(uploaded_file)
+        blob.upload_from_file(uploaded_file)'''
+        uploaded_file.save(os.path.join(model.get_compilation_bucket(), "{}_{}".format(user_id, bot_id)))
 
         # Flag the user as compiling
         update = model.bots.update() \
@@ -200,10 +202,10 @@ def delete_user_bot(intended_user, bot_id, *, user_id):
         ))
 
         for bucket in [model.get_bot_bucket(), model.get_compilation_bucket()]:
-            try:
+            '''try:
                 blob = gcloud_storage.Blob(str(user_id), bucket)
                 blob.delete()
             except gcloud_exceptions.NotFound:
-                pass
+                pass'''
 
         return util.response_success()

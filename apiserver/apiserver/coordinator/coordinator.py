@@ -7,7 +7,7 @@ import sqlalchemy.exc
 import trueskill
 import zstd
 
-import google.cloud.storage as gcloud_storage
+#import google.cloud.storage as gcloud_storage
 
 from .. import config, model, notify, util
 
@@ -169,8 +169,9 @@ def store_game_artifacts(replay_name, users):
             break
 
     bucket = model.get_replay_bucket(bucket_class)
-    blob = gcloud_storage.Blob(replay_key, bucket, chunk_size=262144)
-    blob.upload_from_file(flask.request.files[replay_name])
+    #blob = gcloud_storage.Blob(replay_key, bucket, chunk_size=262144)
+    #blob.upload_from_file(flask.request.files[replay_name])
+    flask.request.files[replay_name].save(os.path.join(bucket, replay_name))
 
     # Store error logs
     for user in users:
@@ -184,10 +185,11 @@ def store_game_artifacts(replay_name, users):
 
             error_log_key = user["log_name"] = \
                 replay_key + "_error_log_" + str(user["user_id"])
-            blob = gcloud_storage.Blob(error_log_key,
+            '''blob = gcloud_storage.Blob(error_log_key,
                                        model.get_error_log_bucket(),
                                        chunk_size=262144)
-            blob.upload_from_file(flask.request.files[error_log_name])
+            blob.upload_from_file(flask.request.files[error_log_name])'''
+            flask.request.files[error_log_name].save(os.path.join(model.get_error_log_bucket(), error_log_name))
 
     return replay_key, bucket_class
 

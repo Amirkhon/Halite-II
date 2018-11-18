@@ -1,6 +1,6 @@
 import enum
 
-import google.cloud.storage as gcloud_storage
+#import google.cloud.storage as gcloud_storage
 import sqlalchemy
 
 from . import config
@@ -252,31 +252,36 @@ def hackathon_ranked_bots_users_query(hackathon_id, *, alias="hackathon_ranked_b
     ).alias(alias)
 
 
-def get_storage_client():
-    return gcloud_storage.Client(project=config.GCLOUD_PROJECT)
+#def get_storage_client():
+    #return gcloud_storage.Client(project=config.GCLOUD_PROJECT)
 
 
 def get_compilation_bucket():
     """Get the object storage bucket for bots to be compiled."""
-    return get_storage_client().get_bucket(config.GCLOUD_COMPILATION_BUCKET)
+    #return get_storage_client().get_bucket(config.GCLOUD_COMPILATION_BUCKET)
+    return config.GCLOUD_COMPILATION_BUCKET
 
 
 def get_bot_bucket():
     """Get the object storage bucket for compiled bots."""
-    return get_storage_client().get_bucket(config.GCLOUD_BOT_BUCKET)
+    #return get_storage_client().get_bucket(config.GCLOUD_BOT_BUCKET)
+    return config.GCLOUD_BOT_BUCKET
 
 
 def get_replay_bucket(kind=0):
     """Get the object storage bucket for game replays."""
-    return get_storage_client().get_bucket(config.GCLOUD_REPLAY_BUCKETS[kind])
+    #return get_storage_client().get_bucket(config.GCLOUD_REPLAY_BUCKETS[kind])
+    return config.GCLOUD_REPLAY_BUCKETS[kind]
 
 
 def get_error_log_bucket():
     """Get the object storage bucket for game error log files."""
-    return get_storage_client().get_bucket(config.GCLOUD_ERROR_LOG_BUCKET)
+    #return get_storage_client().get_bucket(config.GCLOUD_ERROR_LOG_BUCKET)
+    return config.GCLOUD_ERROR_LOG_BUCKET
 
 
 def get_deployed_artifacts_bucket():
     """Get the object storage bucket for deployed worker artifacts."""
-    return get_storage_client().get_bucket(
-        config.GCLOUD_DEPLOYED_ARTIFACTS_BUCKET)
+    #return get_storage_client().get_bucket(
+    #    config.GCLOUD_DEPLOYED_ARTIFACTS_BUCKET)
+    return config.GCLOUD_DEPLOYED_ARTIFACTS_BUCKET

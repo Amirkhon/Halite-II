@@ -2,11 +2,12 @@
 Match API endpoints - list matches and get replays/error logs.
 """
 import io
+import os
 
 import flask
 import sqlalchemy
-import google.cloud.exceptions as gcloud_exceptions
-import google.cloud.storage as gcloud_storage
+#import google.cloud.exceptions as gcloud_exceptions
+#import google.cloud.storage as gcloud_storage
 
 from .. import model, util
 
@@ -209,21 +210,22 @@ def get_match(match_id):
 @util.cross_origin(methods=["GET"])
 def get_replay(replay_bucket, replay_name):
     bucket = model.get_replay_bucket(replay_bucket)
-    blob = gcloud_storage.Blob(replay_name, bucket, chunk_size=262144)
-    buffer = io.BytesIO()
+    #blob = gcloud_storage.Blob(replay_name, bucket, chunk_size=262144)
+    #buffer = io.BytesIO()
 
-    try:
-        blob.download_to_file(buffer)
-    except gcloud_exceptions.NotFound:
+    #try:
+        #blob.download_to_file(buffer)
+    #except gcloud_exceptions.NotFound:
+    if not os.path.isfile(replay_name):
         raise util.APIError(404, message="Replay not found.")
 
-    buffer.seek(0)
-    response = flask.make_response(flask.send_file(
-        buffer,
+    #buffer.seek(0)
+    response = flask.make_response(flask.send_from_directory(
+        bucket, replay_name,
         mimetype="application/x-halite-2-replay",
         as_attachment=True,
         attachment_filename="{}.{}.hlt".format(replay_name, replay_bucket)))
 
-    response.headers["Content-Length"] = str(buffer.getbuffer().nbytes)
+    response.headers["Content-Length"] = str(os.stat(os.path.join(bucket, replay_name)).st_size)
 
     return response
