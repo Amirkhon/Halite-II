@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 
 # General coordinator settings
-COMPETITION_OPEN = False
+COMPETITION_OPEN = True
 # Original PHP: "compState", "finalsPairing"
 COMPETITION_FINALS_PAIRING = False
 # Final open game id, set this to the id of last game played in the open stage
@@ -46,33 +46,35 @@ GCLOUD_PROJECT = 'Clever'
 GCLOUD_PROJECT_ID = 'steel-shine-201523'
 GCLOUD_ZONE = 'us-east1-b'
 
-GCLOUD_COMPILATION_BUCKET = 's24-compiled-bots'
-GCLOUD_BOT_BUCKET = 's24-uploaded-bots'
+BASE_BUCKET = '/home/amir/workshop/buckets/'
+
+GCLOUD_COMPILATION_BUCKET = BASE_BUCKET + 'CB'
+GCLOUD_BOT_BUCKET = BASE_BUCKET + 'BB'
 # Replays are saved in different buckets based on player level
 GCLOUD_REPLAY_BUCKETS = {
     # 0 is the normal bucket
-    0: 's24-replays',
+    0: BASE_BUCKET + 'RB',
     # 1 is the bucket for gold and above players
-    1: 's24-gold-replays',
+    1: BASE_BUCKET + 'GRB',
 }
-GCLOUD_ERROR_LOG_BUCKET = 's24-error-logs'
-GCLOUD_DEPLOYED_ARTIFACTS_BUCKET = 's24-deployed-artifacts'
+GCLOUD_ERROR_LOG_BUCKET = BASE_BUCKET + 'EB'
+GCLOUD_DEPLOYED_ARTIFACTS_BUCKET = BASE_BUCKET + 'DAB'
 
 # The name of the worker source blob in the object storage bucket.
-WORKER_ARTIFACT_KEY = "Halite-II"
+WORKER_ARTIFACT_KEY = "Halite.tgz"
 
 DATABASE_PROJECT_ID = "Clever"
 DATABASE_REGION = "us-east1-b"
 DATABASE_INSTANCE_NAME = "steel-shine-201523:us-east1:s24"
-DATABASE_URL = "mysql://s24:root@35.231.74.162/halite2"
+DATABASE_URL = "mysql+pymysql://root:password@localhost/halite2"
 
 # OAuth
 OAUTH_GITHUB_CONSUMER_KEY = ""
 OAUTH_GITHUB_CONSUMER_SECRET = ""
 
 # CORS setup
-SITE_URL = "http://35.196.190.195"
-API_URL = "http://35.244.180.181"
+SITE_URL = "http://localhost"
+API_URL = "http://localhost"
 CORS_ORIGINS = [SITE_URL]
 
 # API Key authentication

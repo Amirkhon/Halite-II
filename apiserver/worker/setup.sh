@@ -4,24 +4,25 @@
 # written to the profile, so make sure those variables actually get loaded.
 source ~/.profile
 
-cd ../../environment
+#cd ../../environment
 
-cmake -H. -Bbuild
-cmake --build build -- -j2
+#cmake -H. -Bbuild
+#cmake --build build -- -j2
 
-cp build/halite .
+#cp build/halite .
 
-cd ../apiserver/worker
+#cd ../apiserver/worker
 
-cp ../../environment/halite .
+#cp ../../environment/halite .
 
 # Grab configuration values
 python3 grab_config.py
 
 # Fix up cgroups
-if [ -f /home/worker/fix_cgroups.sh ]; then
-   sudo /home/worker/fix_cgroups.sh
-fi
+#if [ -f /home/worker/fix_cgroups.sh ]; then
+   #sudo /home/worker/fix_cgroups.sh
+#fi
 
 # Start the worker
+rm worker-log-*
 screen -S worker -d -m /bin/bash -c "python3 worker.py"

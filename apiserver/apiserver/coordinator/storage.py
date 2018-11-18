@@ -3,6 +3,7 @@ import binascii
 import io
 import tempfile
 import os
+import hashlib
 
 import flask
 #import google.cloud.storage as gcloud_storage
@@ -95,8 +96,10 @@ def download_bot():
     except gcloud_exceptions.NotFound:
         raise util.APIError(404, message="Bot not found.")'''
     botname = "{}_{}".format(user_id, bot_id)
-    if os.path.isfile(os.path.join(backet, botname)):
-        flask.send_from_directory(backet, botname)
+    if os.path.isfile(os.path.join(bucket, botname)):
+        return flask.send_from_directory(bucket, botname, mimetype="application/zip",
+                                  as_attachment=True,
+                                  attachment_filename=botname + ".zip")
     else:
         raise util.APIError(404, message="Bot not found.")
 
@@ -116,10 +119,14 @@ def hash_bot():
     else:
         bucket = model.get_bot_bucket()
 
-    blob = bucket.get_blob("{}_{}".format(user_id, bot_id))
-    if blob is None:
+    with open(os.path.join(bucket, "{}_{}".format(user_id, bot_id)),"rb") as f:
+        bytes = f.read() # read file as bytes
+        hash = hashlib.md5(bytes).hexdigest()
+
+    if hash is None:
         raise util.APIError(400, message="Bot does not exist.")
 
     return util.response_success({
-        "hash": binascii.hexlify(base64.b64decode(blob.md5_hash)).decode('utf-8'),
+        #"hash": binascii.hexlify(base64.b64decode(hash)).decode('utf-8'),
+        "hash": hash,
     })

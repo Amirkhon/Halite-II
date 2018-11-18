@@ -51,7 +51,8 @@ RUNFILE = "run.sh"
 # and memory access. On the inside, we run the bot as a user so that it may
 # not overwrite files. The worker image has a built-in iptables rule denying
 # network access to this user as well.
-BOT_COMMAND = "cgexec -g cpu,memory,devices,cpuset:{cgroup} sudo -Hiu {bot_user} bash -c 'cd {bot_dir} && ./{runfile}'"
+#BOT_COMMAND = "cgexec -g cpu,memory,devices,cpuset:{cgroup} sudo -Hiu {bot_user} bash -c 'cd {bot_dir} && ./{runfile}'"
+BOT_COMMAND = "sudo -Hiu {bot_user} bash -c 'cd {bot_dir} && ./{runfile}'"
 
 
 COMPILE_ERROR_MESSAGE = """
@@ -90,9 +91,10 @@ def give_ownership(top_dir, group, dir_perms):
 
 def rm_as_user(user, directory):
     """Remove a directory tree as the specified user."""
-    subprocess.call(["sudo", "-H", "-u", user, "-s", "rm", "-rf", directory],
-                    stderr=subprocess.PIPE,
-                    stdout=subprocess.PIPE)
+    if os.path.exists(directory):
+        subprocess.call(["sudo", "-H", "-u", user, "-s", "rm", "-rf", directory],
+                        stderr=subprocess.PIPE,
+                        stdout=subprocess.PIPE)
 
 
 def executeCompileTask(user_id, bot_id, backend):
@@ -162,10 +164,10 @@ def executeCompileTask(user_id, bot_id, backend):
             errors.append(UPLOAD_ERROR_MESSAGE + traceback.format_exc())
             backend.compileResult(user_id, bot_id, False, language,
                                   errors="\n".join(errors))
-        finally:
+        #finally:
             # Remove files as bot user (Python will clean up tempdir, but we don't
             # necessarily have permissions to clean up files)
-            rm_as_user("bot_compilation", temp_dir)
+            #rm_as_user("bot_compilation", temp_dir)
 
 
 def runGame(width, height, users):
@@ -207,10 +209,10 @@ def runGame(width, height, users):
             # We want 775 so that the bot can create files still; leading 2
             # is equivalent to g+s which forces new files to be owned by the
             # group
-            give_ownership(bot_dir, "bots", 0o2775)
+            give_ownership(bot_dir, "bots", 0o775)
 
             command.append(BOT_COMMAND.format(
-                cgroup=bot_cgroup,
+                #cgroup=bot_cgroup,
                 bot_dir=bot_dir,
                 bot_user=bot_user,
                 runfile=RUNFILE,
@@ -280,11 +282,11 @@ def executeGameTask(width, height, users, challenge, backend):
     subprocess.run(["pkill", "--signal", "9", "-f", "cgexec"])
 
 def _set_logging():
-    logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
+    logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
     logging.getLogger('werkzeug').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.CRITICAL)
     outLog = logging.StreamHandler(sys.stdout)
-    outLog.setLevel(logging.DEBUG)
+    outLog.setLevel(logging.INFO)
     outLog.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s]: %(message)s'))
     logging.getLogger().addHandler(outLog)
 
@@ -315,7 +317,7 @@ def health_check():
 def main():
     _set_logging()
     logging.info("Starting up worker at {}".format(socket.gethostname()))
-    threading.Thread(target=app.run, kwargs={'host':'0.0.0.0', 'port':5001, 'threaded':True}).start()
+    threading.Thread(target=app.run, kwargs={'host':'0.0.0.0', 'port':5002, 'threaded':True}).start()
     while True:
         set_time()
         try:

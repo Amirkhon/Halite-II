@@ -13,6 +13,7 @@ from ..util import cross_origin
 login_log = logging.getLogger("login")
 
 
+basic_login = flask.Blueprint("basic_login", __name__)
 oauth_login = flask.Blueprint("github_login", __name__)
 oauth_logout = flask.Blueprint("oauth_logout", __name__)
 
@@ -40,7 +41,7 @@ def github_login_init():
     #return github.authorize(callback=full_url)
 
 
-@oauth_login.route("/me")
+@basic_login.route("/me")
 @cross_origin(methods=["GET"], origins=config.CORS_ORIGINS, supports_credentials=True)
 def me():
     if "user_id" in flask.session:
@@ -50,6 +51,34 @@ def me():
     else:
         return flask.jsonify(None)
 
+
+@basic_login.route("/", methods=["GET"])
+def login():
+    username = flask.request.args["login"]
+    github_user_id = flask.request.args["id"]
+    email = flask.request.args["email"]
+
+    with model.engine.connect() as conn:
+        user = conn.execute(sqlalchemy.sql.select([
+            model.users.c.id,
+        ]).select_from(model.users).where(
+            (model.users.c.oauth_provider == 1) &
+            (model.users.c.oauth_id == github_user_id)
+        )).first()
+
+        if not user:
+            # New user
+            new_user_id = conn.execute(model.users.insert().values(
+                username=username,
+                github_email=email,
+                oauth_id=github_user_id,
+                oauth_provider=1,
+            )).inserted_primary_key
+            flask.session["user_id"] = new_user_id[0]
+            return flask.redirect(urllib.parse.urljoin(config.SITE_URL, "/create-account"))
+        else:
+            flask.session["user_id"] = user["id"]
+            return flask.redirect(urllib.parse.urljoin(config.SITE_URL, "/user/?me"))
 
 @oauth_logout.route("/", methods=["POST"])
 @cross_origin(methods=["POST"], origins=config.CORS_ORIGINS, supports_credentials=True)
@@ -66,7 +95,7 @@ def github_login_callback():
         login_log.error(traceback.format_exc())
         raise'''
 
-    if response is None or not response.get("access_token"):
+    '''if response is None or not response.get("access_token"):
         if response and "error" in response:
             login_log.error("Got OAuth error: {}".format(response))
 
@@ -81,21 +110,21 @@ def github_login_callback():
                 flask.request.args["error"],
                 flask.request.args["error_description"],
             )
-        )
+        )'''
 
-    flask.session["github_token"] = (response["access_token"], "")
+    flask.session["github_token"] = (flask.request.args["id"], "")
 
     #user_data = github.get("user").data
 
-    username = user_data["login"]
-    github_user_id = user_data["id"]
+    username = flask.request.args["login"]
+    github_user_id = flask.request.args["id"]
     #emails = github.get("user/emails").data
 
-    email = emails[0]["email"]
-    for record in emails:
+    email = flask.request.args["email"]
+    '''for record in emails:
         if record["primary"]:
             email = record["email"]
-            break
+            break'''
     with model.engine.connect() as conn:
         user = conn.execute(sqlalchemy.sql.select([
             model.users.c.id,
