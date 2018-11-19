@@ -396,12 +396,9 @@
            if(!this.code) {
                Alert.show('Please enter your verification code');
            } else {
-               fetch(`${api.LOGIN_SERVER_URL}/`, {
-                   method: 'post',
-                   body: {code: this.code}
-               }).then(()=> {
+               api.login(this.code).then(()=> {
                    window.location.replace('/user?me');
-               }).catch(error => {
+               }).fail(() => {
                    Alert.show('Access denied. Reason: Invalid verification code');
                });
            }

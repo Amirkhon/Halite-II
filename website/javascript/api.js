@@ -48,6 +48,15 @@ export function me () {
   })
 }
 
+export function login(code) {
+  return $.post({
+    url: `${LOGIN_SERVER_URL}/`,
+    data: {
+      code: code
+    }
+  })
+}
+
 export function get_user (user_id) {
   return $.get({
     url: `${API_SERVER_URL}/user/${user_id}`,
