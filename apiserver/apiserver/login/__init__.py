@@ -52,33 +52,26 @@ def me():
         return flask.jsonify(None)
 
 
-@basic_login.route("/", methods=["GET"])
+@basic_login.route("/", methods=["POST"])
 def login():
-    username = flask.request.args["login"]
-    github_user_id = flask.request.args["id"]
-    email = flask.request.args["email"]
+    code = flask.request.form["code"]
 
     with model.engine.connect() as conn:
         user = conn.execute(sqlalchemy.sql.select([
             model.users.c.id,
         ]).select_from(model.users).where(
-            (model.users.c.oauth_provider == 1) &
-            (model.users.c.oauth_id == github_user_id)
+            (model.users.c.verification_code == code)
         )).first()
 
         if not user:
-            # New user
-            new_user_id = conn.execute(model.users.insert().values(
-                username=username,
-                github_email=email,
-                oauth_id=github_user_id,
-                oauth_provider=1,
-            )).inserted_primary_key
-            flask.session["user_id"] = new_user_id[0]
-            return flask.redirect(urllib.parse.urljoin(config.SITE_URL, "/create-account"))
+            raise util.APIError(
+                403,
+                message="Access denied. Reason: Invalid verification code"
+            )
         else:
             flask.session["user_id"] = user["id"]
-            return flask.redirect(urllib.parse.urljoin(config.SITE_URL, "/user/?me"))
+            return util.response_success()
+            #return flask.redirect(urllib.parse.urljoin(config.SITE_URL, "/user/?me"))
 
 @oauth_logout.route("/", methods=["POST"])
 @cross_origin(methods=["POST"], origins=config.CORS_ORIGINS, supports_credentials=True)

@@ -87,7 +87,7 @@
             <td class="text-center">{{ player.rank || player.local_rank }}</td>
             <td class="nowrap">
               <a :href="'/user?user_id=' + player.user_id" class="leaderboard-name">
-                <img width="30" height="30" :src="`https://github.com/${player.username}.png`" alt="">
+                <img width="30" height="30" :src="`https://picsum.photos/420/420/?random`" alt="">
                 {{ player.username }}
               </a>
             </td>

@@ -4,10 +4,10 @@
             <div class="user-profile">
                 <div class="user-profile-avatar">
                     <i class="xline xline-top"></i>
-                    <img class="img-responsive" :src="'https://github.com/' + user.username + '.png'" :alt="user.username" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/2000px-Placeholder_no_text.svg.png'">
+                    <img class="img-responsive" :src="'https://picsum.photos/420/420/?random'" :alt="user.username" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/2000px-Placeholder_no_text.svg.png'">
                 </div>
                 <div class="user-profile-detail">
-                    <a class="user-name" target="_blank" :href="'https://github.com/' + user.username">{{ user.username }}</a>
+                    <!-- <a class="user-name" target="_blank" :href="'https://github.com/' + user.username">{{ user.username }}</a> -->
                     <p>{{ user.level }} <span v-if="user.organization">at <a  :href="`/programming-competition-leaderboard?organization=${user.organization_id}`">{{ user.organization }}</a></span></p>
                     <p v-if="user.location">
                       From <a :href="`/programming-competition-leaderboard?country=${user.country_code}`">{{user.location}}</a>
@@ -332,7 +332,7 @@
                                                                 <span class="icon-trophy"></span>
                                                               </div>
                                                               <a v-for="(player, index) in challenge.players" :href="`/user?user_id=${player.user_id}`" class="game-participant">
-                                                                <img :src="`https://github.com/${player.username}.png`" :alt="player.username">
+                                                                <img :src="`https://picsum.photos/420/420/?random`" :alt="player.username">
                                                                 <span class="rank">{{player.rank + 1}}</span>
                                                               </a>
                                                             </td>
@@ -606,7 +606,7 @@
 
         source.then((user) => {
           if (user === null) {
-            window.location.replace(`${api.LOGIN_SERVER_URL}/github`)
+            window.location.replace(`${this.baseUrl}`)
             return
           }
           this.user = user

@@ -227,7 +227,7 @@
                     <i class="xline xline-top"></i>
                     <i class="xline xline-bottom"></i>
                     <div class="card-dashboard-thumb">
-                      <img :src="`https://github.com/${_player.name}.png`">
+                      <img :src="`https://picsum.photos/420/420/?random`">
                     </div>
                     <div class="card-dashboard-info">
                       <span style="display: block;" :class="`player`">

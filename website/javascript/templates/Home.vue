@@ -1,17 +1,19 @@
 <template>
     <div class="home-container">
-        <div class="notification font-headline">The 2017-2018 season has ended. <a href="/programming-competition-leaderboard" style="text-transform:underline !important; color:#25242f; font-weight:bold;">Check out this year's winners!</a></div>
+        <!--div class="notification font-headline">The 2017-2018 season has ended. <a href="/programming-competition-leaderboard" style="text-transform:underline !important; color:#25242f; font-weight:bold;">Check out this year's winners!</a></div-->
         <div class="row">
             <div class="col-md-12">
                 <p class="t1 c-wht font-headline">HALITE II</p>
                 <p class="d1 c-org font-headline">MAY THE BEST BOT WIN</p>
                 <div v-if="!me_in" class="not-me ha-button-container">
-                    <div class="hidden-xs hidden-sm">
+                    <input type="text" v-model="code" placeholder="VERIFICATION CODE" style="color: black">
+                    <a class="ha-button" @click="signIn"><span>SIGN IN</span></a>
+                    <!--<div class="hidden-xs hidden-sm">
                         <a class="ha-button" href="/learn-programming-challenge"><span>GET STARTED</span></a>
                     </div>
                     <div class="visible-xs visible-sm">
                         <a class="ha-button" href="https://api.halite.io/v1/login/github" onclick="javascript:handleOutboundLinkClicks('account', 'click-to-sign-up','navigation');return true;"><span>SIGN UP</span></a>
-                    </div>
+                    </div>-->
                 </div>
                 <!-- <div v-else class="me-in">
                     <div class="ha-button-container no-bg-button">
@@ -79,8 +81,7 @@
            </div>
             <div class="col-md-12 ha-line">
             </div>
-            <div class="col-md-12 big-menu watch-section">
-                <p class="t2 c-wht font-headline">WATCH TOP GAMES</p>
+            <!-- <div class="col-md-12 big-menu watch-section">                <p class="t2 c-wht font-headline">WATCH TOP GAMES</p>
                 <div class="line-container"><i class="xline xline-top"></i></div>
                 <p class="t5 c-gry section-des">Check out some top games from Halite players to learn more about rules and strategy. Our team has selected some fun 2-player and 4-player games just for you.</p>
                 <div class="line-container"><i class="xline xline-top"></i></div>
@@ -131,9 +132,6 @@
                     </a>
                 </div>
                 <div class="clear"></div>
-                <!--<div class="ha-button-container">
-                    <div class="ha-button no-bg-button"><span>SEE ALL VIDEOS</span></div>
-                </div>-->
             </div>
             <div class="clear"></div>
             <div class="col-md-12 watch-section-arrow">
@@ -205,13 +203,6 @@
                                 <p class="t5 c-gry">Invite a friend to join in the fun by challenge any user already playing in Halite</p>
                                 <div class="clear"></div>
                                 <div class="ha-input-container btn-bottom btn-bottom-width">
-                                    <!-- <div class="input-field">
-                                        <input id="intmpid" type="email" placeholder="Your friend's email..."/>
-                                        <button class="btn" v-on:click="invite"><span>INVITE</span></button>
-                                        <br/>
-                                    </div>
-                                    <p id="invitestatus" class="t5 c-gry"></p> -->
-
                                 </div>
                                 <div class="ha-button-container no-bg-button btn-bottom">
                                     <div>
@@ -322,14 +313,15 @@
                         <a href="/learn-programming-challenge" v-if="me_in" class="ha-button visible-sm visible-xs"><span>GET STARTED AND LEARN</span></a>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>-->
+        </div> 
     </div>
 </template>
 
 <script>
   import Vue from 'vue'
   import * as api from '../api'
+  import {Alert} from '../utils.js'
   import * as utils from '../utils'
   import ChallengeModal from './ChallengeModal.vue'
 
@@ -348,12 +340,16 @@
         }
         return {
             me_in,
-            loginServerUrl: `${api.LOGIN_SERVER_URL}/github`,
+            loginServerUrl: `${api.LOGIN_SERVER_URL}/`,
+            code: null,
             modalOpen: false,
         }
     },
      mounted: function () {
        this.createRedditWidget()
+       api.me().then(user => {
+           this.me_in = user != null
+       })
      },
      methods: {
        invite: function () {
@@ -382,7 +378,7 @@
          }
 
          s.onload = function () {
-           document.getElementById('redditWidget').innerHTML = content
+           //document.getElementById('redditWidget').innerHTML = content
          }
 
          document.getElementsByTagName('head')[0].appendChild(s)
@@ -395,6 +391,20 @@
        },
        closeChallengeModal: function(){
         this.modalOpen = false;
+       },
+       signIn: function() {
+           if(!this.code) {
+               Alert.show('Please enter your verification code');
+           } else {
+               fetch(`${api.LOGIN_SERVER_URL}/`, {
+                   method: 'post',
+                   body: {code: this.code}
+               }).then(()=> {
+                   window.location.replace('/user?me');
+               }).catch(error => {
+                   Alert.show('Access denied. Reason: Invalid verification code');
+               });
+           }
        }
      }
    }

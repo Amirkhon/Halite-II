@@ -21,7 +21,7 @@ Welcome to the Halite II competition!  If you’re here, that means you’re exc
 
 ### 1) SIGN UP
 
-First, you need to [sign up via Github][login] and create a user profile.
+First, you need to [sign up][login] and create a user profile.
 
 ### 2) WATCH A FEW GAMES
 
@@ -54,7 +54,7 @@ We've created a lot of other documents for you to learn how to play Halite. If y
 ### May the best bot win!
 
 
-[login]: {{ site.login_server_url }}/github
+[login]: {{ site.login_server_url }}/login
 [downloads]: {{ site.baseurl }}/learn-programming-challenge/downloads-and-starter-kits
 [contact]: {{ site.baseurl }}/about/contact-us
 [play]: {{ site.baseurl }}/play-programming-challenge

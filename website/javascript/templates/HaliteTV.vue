@@ -412,7 +412,7 @@
         return `(${player.leaderboard_rank}) ${player.username}`;
       },
       getProfileImage(username) {
-        return `https://github.com/${username}.png`
+        return "https://picsum.photos/420/420/?random"
       },
       getUsers(){
         api.leaderboard([], null, 0, 9999).then((data) => {
