@@ -46,7 +46,7 @@ GCLOUD_PROJECT = 'Clever'
 GCLOUD_PROJECT_ID = 'steel-shine-201523'
 GCLOUD_ZONE = 'us-east1-b'
 
-BASE_BUCKET = '/home/amir/workshop/buckets/'
+BASE_BUCKET = '/opt/halite/buckets/'
 
 GCLOUD_COMPILATION_BUCKET = BASE_BUCKET + 'CB'
 GCLOUD_BOT_BUCKET = BASE_BUCKET + 'BB'
@@ -66,7 +66,7 @@ WORKER_ARTIFACT_KEY = "Halite.tgz"
 DATABASE_PROJECT_ID = "Clever"
 DATABASE_REGION = "us-east1-b"
 DATABASE_INSTANCE_NAME = "steel-shine-201523:us-east1:s24"
-DATABASE_URL = "mysql+pymysql://root:password@localhost/halite2"
+DATABASE_URL = "mysql+pymysql://root:password@localhost/halite2?charset=utf8"
 
 # OAuth
 OAUTH_GITHUB_CONSUMER_KEY = ""

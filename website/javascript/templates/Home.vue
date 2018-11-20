@@ -3,10 +3,12 @@
         <!--div class="notification font-headline">The 2017-2018 season has ended. <a href="/programming-competition-leaderboard" style="text-transform:underline !important; color:#25242f; font-weight:bold;">Check out this year's winners!</a></div-->
         <div class="row">
             <div class="col-md-12">
-                <p class="t1 c-wht font-headline">HALITE II</p>
+                <p class="t1 c-wht font-headline">Students 24</p> 
+                <p class="t2 c-wht font-headline">ACI Worldwide Russia</p>
+                <p class="t3 c-wht font-headline">Kazan & Yoshkar-Ola 24.11.2018</p>
                 <p class="d1 c-org font-headline">MAY THE BEST BOT WIN</p>
                 <div v-if="!me_in" class="not-me ha-button-container">
-                    <input type="text" v-model="code" placeholder="VERIFICATION CODE" style="color: black">
+                    <input type="text" v-model="code" placeholder="VERIFICATION CODE" style="color: black; text-align: center">
                     <a class="ha-button" @click="signIn"><span>SIGN IN</span></a>
                     <!--<div class="hidden-xs hidden-sm">
                         <a class="ha-button" href="/learn-programming-challenge"><span>GET STARTED</span></a>
