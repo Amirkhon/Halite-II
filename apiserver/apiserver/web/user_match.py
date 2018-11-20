@@ -2,6 +2,7 @@
 User match API endpoints - list user matches and get replays/error logs
 """
 import io
+import os
 
 import flask
 import sqlalchemy
@@ -65,14 +66,14 @@ def get_match_replay(intended_user, match_id):
         buffer = io.BytesIO()
         blob.download_to_file(buffer)
         buffer.seek(0)'''
-        replay_name = match["replay_name"]
-        response = flask.make_response(flask.send_from_directory(
-            bucket, replay_name,
+        replay_file = os.path.join(bucket, match["replay_name"]) + ".hlt"
+        response = flask.make_response(flask.send_file(
+            replay_file,
             mimetype="application/x-halite-2-replay",
             as_attachment=True,
             attachment_filename=str(match_id)+".hlt"))
 
-        response.headers["Content-Length"] = str(os.stat(os.path.join(bucket, replay_name)).st_size)
+        response.headers["Content-Length"] = str(os.stat(replay_file).st_size)
 
         return response
 
