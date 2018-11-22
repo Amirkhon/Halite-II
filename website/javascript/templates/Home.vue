@@ -3,7 +3,7 @@
         <!--div class="notification font-headline">The 2017-2018 season has ended. <a href="/programming-competition-leaderboard" style="text-transform:underline !important; color:#25242f; font-weight:bold;">Check out this year's winners!</a></div-->
         <div class="row">
             <div class="col-md-12">
-                <p class="t1 c-wht font-headline">Students 24</p> 
+                <p class="t1 c-wht font-headline">Student24</p> 
                 <p class="t2 c-wht font-headline">ACI Worldwide Russia</p>
                 <p class="t3 c-wht font-headline">Kazan & Yoshkar-Ola 24.11.2018</p>
                 <p class="d1 c-org font-headline">MAY THE BEST BOT WIN</p>
