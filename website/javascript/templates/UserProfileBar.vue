@@ -51,7 +51,7 @@ export default {
       mounted: function () {
         api.me().then((user) => {
           this.username = user.username
-          this.profile_image = api.make_profile_image_url(this.user.user_id)
+          this.profile_image = api.make_profile_image_url(user.user_id)
           $('profile').addClass('container-loaded')
           $('submitbutton').addClass('container-loaded')
         })
