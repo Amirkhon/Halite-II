@@ -119,7 +119,7 @@ const showGame = (game) => {
 		  },
 		  getUserProfileImage: function (user_id) {
 			return api.get_user(user_id).then((user) => {
-			  return api.make_profile_image_url(user.username)
+			  return api.make_profile_image_url(user.user_id)
 			})
 		  }
 		}

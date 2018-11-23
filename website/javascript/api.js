@@ -80,8 +80,8 @@ export function logout () {
   })
 }
 
-export function make_profile_image_url (username) {
-  return `https://github.com/${username}.png`
+export function make_profile_image_url (user_id) {
+  return `https://picsum.photos/420/420/?image=${user_id % 1000}`
 }
 
 export function list_bots (user_id) {

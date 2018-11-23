@@ -696,7 +696,7 @@
                         player.id = player_id
                         player.name_rank = `(${player.leaderboard_rank}) ${username} [${rating}=${mu}μ${sigma}σ]`
 
-                        this.profile_images[player_id] = api.make_profile_image_url(username)
+                        this.profile_images[player_id] = api.make_profile_image_url(player_id)
                         this.usernames[player_id] = username
 
                         if (player_id == this.user.user_id) {
@@ -851,7 +851,7 @@
                 }
 
                 let username = game.players[participant].username
-                this.profile_images[participant] = api.make_profile_image_url(username)
+                this.profile_images[participant] = api.make_profile_image_url(game.players[participant].user_id)
                 this.usernames[participant] = username
 
                 let playerData = nemesisMap.get(participant)

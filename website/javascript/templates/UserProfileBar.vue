@@ -36,7 +36,7 @@ export default {
         if (me) {
           return {
             username: me.username,
-            profile_image: api.make_profile_image_url(me.username),
+            profile_image: api.make_profile_image_url(me.user_id),
             isMobile: isMobile,
             isCreateAccount: window.location.pathname == '/create-account'
           }
@@ -51,7 +51,7 @@ export default {
       mounted: function () {
         api.me().then((user) => {
           this.username = user.username
-          this.profile_image = api.make_profile_image_url(this.username)
+          this.profile_image = api.make_profile_image_url(this.user.user_id)
           $('profile').addClass('container-loaded')
           $('submitbutton').addClass('container-loaded')
         })
