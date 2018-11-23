@@ -2,6 +2,7 @@
 layout: default
 toc: false
 full_width: true
+hide_login: true
 mount_view: Home
 title: Halite AI Programming Challenge
 image: assets/images/opengraph.png
