@@ -8,8 +8,10 @@
                 <p class="t3 c-wht font-headline">Kazan & Yoshkar-Ola 24.11.2018</p>
                 <p class="d1 c-org font-headline">MAY THE BEST BOT WIN</p>
                 <div v-if="!me_in" class="not-me ha-button-container">
-                    <input type="text" v-model="code" placeholder="VERIFICATION CODE" style="color: black; text-align: center">
-                    <a class="ha-button" @click="signIn"><span>SIGN IN</span></a>
+                    <form v-on:submit.prevent="signIn">
+                        <input type="text" v-model="code" placeholder="VERIFICATION CODE" style="color: black; text-align: center">
+                        <a class="ha-button" @click="signIn"><span>SIGN IN</span></a>
+                    </form>
                     <!--<div class="hidden-xs hidden-sm">
                         <a class="ha-button" href="/learn-programming-challenge"><span>GET STARTED</span></a>
                     </div>

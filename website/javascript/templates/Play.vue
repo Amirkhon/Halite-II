@@ -23,7 +23,7 @@
           <div data-v-2c45658c="" id="bot-upload-container" class="upload-container">
             <div data-v-2c45658c="" class="upload-desc text-center">
               <h2 data-v-2c45658c="">Submissions have closed</h2> 
-              <p data-v-2c45658c="">The Student24 2018 has ended. But you can still<a href="./"> sign up </a>to check updates.</p>
+              <p data-v-2c45658c="">The Student24 2018 has ended. But you can still<a href="{{baseUrl}}"> sign up </a>to check updates.</p>
             </div> 
           </div>
           <!--div class="upload-container" id="bot-upload-container">
