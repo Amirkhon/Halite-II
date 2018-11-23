@@ -8,7 +8,7 @@
                 </div>
                 <div class="user-profile-detail">
                     <p>{{ user.username }}</p>
-                    <p>{{ user.level }} <span v-if="user.organization">at <a  :href="`/programming-competition-leaderboard?organization=${user.organization_id}`">{{ user.organization }}</a></span></p>
+                    <!--<p>{{ user.level }} <span v-if="user.organization">at <a  :href="`/programming-competition-leaderboard?organization=${user.organization_id}`">{{ user.organization }}</a></span></p>-->
                     <p v-if="user.location">
                       From <a :href="`/programming-competition-leaderboard?country=${user.country_code}`">{{user.location}}</a>
                     </p>
