@@ -7,7 +7,7 @@
         </ul> -->
         <div id="profile" class="profile-container">
             <a v-on:click.stop="slide_profile">
-                <img :src="profile_image + '?size=40'" :title="username + '\'s Profile'" :alt="username + '\'s profile image'" />
+                <img :src="profile_image" :title="username + '\'s Profile'" :alt="username + '\'s profile image'" />
                 <i class="fa fa-sort-down"></i>
                 <ul class="nav" v-if="!isCreateAccount">
                   <li><a v-on:click="gaData('account','click-view-profile','account-flow')" href="/user?me"><span>view profile</span><i class="line line-bottom"></i></a></li>
@@ -36,7 +36,7 @@ export default {
         if (me) {
           return {
             username: me.username,
-            profile_image: api.make_profile_image_url(me.user_id),
+            profile_image: `https://picsum.photos/40/40/?image=${me.user_id % 1000}`,
             isMobile: isMobile,
             isCreateAccount: window.location.pathname == '/create-account'
           }
