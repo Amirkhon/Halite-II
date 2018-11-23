@@ -412,8 +412,7 @@
         return `(${player.leaderboard_rank}) ${player.username}`;
       },
       getProfileImage(user) {
-        console.log(user);
-        return `https://picsum.photos/16/16/?image=${user.user_id % 1000}`
+        return `https://picsum.photos/16/16/?image=${user.rank}`
       },
       getUsers(){
         api.leaderboard([], null, 0, 9999).then((data) => {
