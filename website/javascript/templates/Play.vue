@@ -251,7 +251,7 @@
             }).then(() => {
               this.message = null
             }).catch(() => {
-              this.message = 'There was an error parsing the replay. Please let us know at halite@halite.io.'
+              this.message = 'There was an error parsing the replay. Please let us know'
             })
           }
           reader.readAsArrayBuffer(files[0])

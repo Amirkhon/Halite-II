@@ -62,7 +62,7 @@
             <td class="text-center">{{ index+1 }}</td>
             <td>
               <a :href="'/user?user_id=' + player.user_id" class="leaderboard-name">
-                <img width="30" height="30" :src="`https://picsum.photos/420/420/?random`" alt="">
+                <img width="30" height="30" :src="`https://picsum.photos/30/30/?image=${player.user_id % 1000}`" alt="">
                 {{ player.username }}
               </a>
             </td>

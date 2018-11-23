@@ -19,7 +19,7 @@
                 <p class="inline-block mg-left-tiny">{{hackathon.pin}}</p>
             </div>
             <div class="ha-button join-btn" v-show="!isInHackathon">
-                <a href="#join_now"><span>JOIN NOW</span></a>
+                <a href="./"><span>JOIN NOW</span></a>
             </div>
         </section>
 
@@ -44,7 +44,7 @@
             </div>
         </section>
 
-        <a id="join_now" name="join_now"></a>
+        <!--<a id="join_now" name="join_now"></a>
         <section class="hackathon-join">
             <div class="panel-group" aria-multiselectable="true">
                 <div class="panel panel-stats">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>-->
 
         <section class="hackathon-video">
         </section>

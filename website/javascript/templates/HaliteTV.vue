@@ -173,7 +173,7 @@
                 <td><a @click="play(video.game_id)">{{video.time_played | moment("MM/DD/YY HH:mm:ss")}}</a></td>
                 <td>
                   <a :href="`${baseUrl}/user?user_id=${player.user_id}`" target="_blank" v-for="player in video.players" :key="player.user_id">
-                    <img width="16" height="16" :src="getProfileImage(player.username)" :alt="player.username">
+                    <img width="16" height="16" :src="getProfileImage(player.user_id)" :alt="player.username">
                     {{player.rank}}
                   </a>
                 </td>
@@ -411,8 +411,8 @@
       getPlayerText(player){
         return `(${player.leaderboard_rank}) ${player.username}`;
       },
-      getProfileImage(username) {
-        return "https://picsum.photos/420/420/?random"
+      getProfileImage(id) {
+        return `https://picsum.photos/16/16/?image=${id % 1000}`
       },
       getUsers(){
         api.leaderboard([], null, 0, 9999).then((data) => {
