@@ -326,6 +326,8 @@
       //automatically refresh feeds
       setInterval(this.refreshVideoFeeds, 1000)
       setInterval(this.fetchFeeds, 5000)
+      const _this = this;
+      setInterval(function () {_this.play(this.recentVideos[0].game_id)}, 120000)
 
       api.me().then((data) => {
         this.me = data
