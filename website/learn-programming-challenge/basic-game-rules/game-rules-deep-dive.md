@@ -24,7 +24,7 @@ Each player begins with three ships, arranged along the vertical axis with one u
 Each initial ship starts with the maximum 255 health points and 0 velocity.
 
 ## Turns
-Halite II is a simultaneous turn-based game. The game proceeds until a bot wins, or until the turn limit is reached. The turn limit is calculated as 100 + sqrt(min(mapWidth * mapHeight)).
+Halite II is a simultaneous turn-based game. The game proceeds until a bot wins, or until the turn limit is reached. The turn limit is calculated as 100 + sqrt(mapWidth * mapHeight).
 
 At the beginning of each turn, all bots receive the current game state, and have a limited time (2000 milliseconds) to issue a command per ship (thrust, dock, or undock). Any bot that issues a malformed command or does not respond within the allotted time is ejected.
 
