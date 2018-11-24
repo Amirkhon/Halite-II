@@ -19,7 +19,7 @@
                 <p class="inline-block mg-left-tiny">{{hackathon.pin}}</p>
             </div>
             <div class="ha-button join-btn" v-show="!isInHackathon">
-                <a href="{{baseUrl}}"><span>JOIN NOW</span></a>
+                <a href="/"><span>JOIN NOW</span></a>
             </div>
         </section>
 

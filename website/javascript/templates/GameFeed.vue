@@ -130,7 +130,7 @@ export default {
                 for (let participant of Object.keys(game.players)) {
                   let player = game.players[participant]
                   player.id = participant
-                  this.profile_images[participant] = api.make_profile_image_url(player.user_id)
+                  this.profile_images[participant] = api.make_profile_image_url(player.rank)
                   if (player.mu) {
                     let mu = Math.round(player.mu * 100) / 100
                     let sigma = Math.round(player.sigma * 1000) / 1000
