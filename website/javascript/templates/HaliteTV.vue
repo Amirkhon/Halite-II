@@ -326,7 +326,7 @@
       //automatically refresh feeds
       setInterval(this.refreshVideoFeeds, 1000)
       setInterval(this.fetchFeeds, 5000)
-      setInterval(this.play_last, 90000)
+      setInterval(this.play_last, 120000)
 
       api.me().then((data) => {
         this.me = data
