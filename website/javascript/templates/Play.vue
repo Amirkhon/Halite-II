@@ -23,7 +23,7 @@
           <div data-v-2c45658c="" id="bot-upload-container" class="upload-container">
             <div data-v-2c45658c="" class="upload-desc text-center">
               <h2 data-v-2c45658c="">Submissions have closed</h2> 
-              <p data-v-2c45658c="">The Student24 2018 has ended.</p>
+              <p data-v-2c45658c="">The Student24 2018 has ended.<a href="/hackathon-individual?hackathon_id=52">Check the results</a>.</p>
             </div> 
           </div>
           <!--div class="upload-container" id="bot-upload-container">
